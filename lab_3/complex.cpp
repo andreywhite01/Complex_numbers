@@ -54,9 +54,9 @@ Complex operator^(const Complex& v, const int& n) {
 
 ostream& operator<<(ostream& out, const Complex& v) {
 	if (v.Im >= 0)
-		out << v.Re << " + i" << v.Im;
+		out << v.Re << " + " << v.Im << "i";
 	else
-		out << v.Re << " - i" << abs(v.Im);
+		out << v.Re << " - " << abs(v.Im) << "i";
 	return out;
 }
 
@@ -76,8 +76,12 @@ Complex sqrt(const Complex& v) {
 		else
 			return Complex(0, 0);
 	}
-	else
-		arg = atan(v.Im / v.Re);
+	else {
+		if (v.Im / v.Re < 0)
+			arg = PI - atan(abs(v.Im / v.Re));
+		else
+			arg = atan(v.Im / v.Re);
+	}
 	double Re_pow = sqrt(r) * cos(1 / 2. * arg);
 	double Im_pow = sqrt(r) * sin(1 / 2. * arg);
 	return Complex(Re_pow, Im_pow);

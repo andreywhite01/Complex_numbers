@@ -29,11 +29,12 @@ void Test() {
 		Assert((Complex(0, 0) ^ 4), Complex(0, 0), "20");
 		Assert((Complex(0, -2) ^ 7), Complex(0, 128), "21");
 		Assert((Complex(1.5, 0) ^ 3), Complex(3.375, 0), "22");
+		Assert((Complex(-4, 1) ^ 2), Complex(15, -8), "23");
 		cerr << "Извлечение квадратного корня\n";
-		Assert(sqrt(Complex(1,0)), Complex(1, 0), "23");
-		Assert(sqrt(Complex(0,1)), Complex(0.70711, 0.70711), "24");
-		Assert(sqrt(Complex(-4,1)), Complex(0.2481, 2.01533), "25");
-		Assert(sqrt(Complex(0.1,2)), Complex(1.0253, 0.97532), "26");
-		Assert(sqrt(Complex(0,0)), Complex(0, 0), "27");
+		Assert(sqrt(Complex(1,0)), Complex(1, 0), "24");
+		Assert(sqrt(Complex(0,1)), Complex(0.70711, 0.70711), "25");
+		Assert(sqrt(Complex(-4,1)), Complex(0.2481, 2.01533), "26");
+		Assert(sqrt(Complex(0.1,2)), Complex(1.0253, 0.97532), "27");
+		Assert(sqrt(Complex(0,0)), Complex(0, 0), "28");
 	}
 }
