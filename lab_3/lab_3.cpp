@@ -6,7 +6,8 @@
 using namespace std;
 
 Complex GetComplexValue(string::const_iterator range_begin, string::const_iterator range_end);
-Complex Solve(const string& line);
+set<Complex> Solve(const string& line);
+
 
 int main() {
 	setlocale(LC_ALL, "rus");
@@ -14,12 +15,13 @@ int main() {
 	try
 	{
 		string line;
-		cout << "Ввеите простейшее выражение с комплесными числами вида:\n";
-		cout << "\t<(a + bi) _(c + di)>, где <_> -одна из операций + -/*\n";
+		cout << "Введите простейшее выражение с комплесными числами вида:\n";
+		cout << "\t<(a + bi) % (c + di)>, где <%> -одна из операций +-/*\n";
 		cout << "\t<(a + bi) ^ n>, где n - целое\n";
 		cout << "\t<sqrt(a + bi)>\n\n";
-		getline(cin, line);
-		cout << "Ответ: " << Solve(line);
+		while (getline(cin, line)) {
+			cout << "Ответ: " << Solve(line);
+		}
 	}
 	catch (const exception& e)
 	{
@@ -29,7 +31,7 @@ int main() {
 	return 0;
 }
 
-Complex Solve(const string &line) {
+set<Complex> Solve(const string &line) {
 	auto range_begin1 = find(line.begin(), line.end(), '(');
 	if (range_begin1 != line.end()) {
 		auto range_end1 = find(next(range_begin1), line.end(), ')');
@@ -42,13 +44,13 @@ Complex Solve(const string &line) {
 			if (it_pow == line.end()) {
 				string temp = { line.begin(), line.begin() + 4 };
 				if (temp != "sqrt")
-					return value_1;
+					return { value_1 };
 				else
 					return sqrt(value_1);
 			}
 			else {
-				int pow = atof((string{ next(it_pow), line.end() }).c_str());
-				return value_1 ^ pow;
+				int pow = int(atof((string{ next(it_pow), line.end() }).c_str()));
+				return { value_1 ^ pow };
 			}
 		}
 		else {
@@ -63,19 +65,19 @@ Complex Solve(const string &line) {
 				switch (op)
 				{
 				case '+': {
-					return value_1 + value_2;
+					return { value_1 + value_2 };
 					break;
 				}
 				case '-': {
-					return value_1 - value_2;
+					return { value_1 - value_2 };
 					break;
 				}
 				case '*': {
-					return value_1 * value_2;
+					return { value_1 * value_2 };
 					break;
 				}
 				case '/': {
-					return value_1 / value_2;
+					return { value_1 / value_2 };
 					break;
 				}
 				default:
@@ -88,6 +90,7 @@ Complex Solve(const string &line) {
 	else
 		throw(exception("Не найдено комплексное число"));
 }
+
 
 Complex GetComplexValue(string::const_iterator range_begin, string::const_iterator range_end) {
 	string re_v, im_v;

@@ -54,10 +54,25 @@ Complex operator^(const Complex& v, const int& n) {
 
 ostream& operator<<(ostream& out, const Complex& v) {
 	if (v.Im >= 0)
-		out << v.Re << " + " << v.Im << "i";
+		out << round(v.Re / PRECISION) * PRECISION << " + " << round(v.Im / PRECISION)* PRECISION << "i";
 	else
-		out << v.Re << " - " << abs(v.Im) << "i";
+		out << round(v.Re / PRECISION) * PRECISION << " - " << round(abs(v.Im) / PRECISION) * PRECISION << "i";
 	return out;
+}
+
+ostream& operator<<(ostream& out, const set<Complex>& s) {
+	if (s.size() == 1) {
+		return out << *(s.begin());
+	}
+	else {
+		out << "[ ";
+		auto it = s.begin();
+		while(next(it) != s.end()) {
+			out << *(it++) << ", ";
+		}
+		out << *prev(s.end()) << " ]";
+		return out;
+	}
 }
 
 bool operator==(const Complex& v1, const Complex& v2) {
@@ -65,24 +80,44 @@ bool operator==(const Complex& v1, const Complex& v2) {
 		round(v1.Im / PRECISION) == round(v2.Im / PRECISION);
 }
 
-Complex sqrt(const Complex& v) {
-	double r = sqrt(pow(v.Re, 2) + pow(v.Im, 2));
+bool operator<(const Complex& v1, const Complex& v2) {
+	if (v1.Re == v2.Re)
+		return v1.Im <= v2.Im;
+	else
+		return v1.Re <= v2.Re;
+}
+
+set<Complex>sqrt(const Complex& v, const int& n) {
+	set<Complex> results = {};
+	double re = v.Re, im = v.Im, res_re, res_im;
+	double r = sqrt(pow(re, 2) + pow(im, 2));
 	double arg;
-	if (v.Re == 0) {
-		if (v.Im > 0)
+	if (re == 0) {
+		if (im > 0)
 			arg = PI / 2.;
-		else if (v.Im < 0)
-			arg = - PI / 2.;
+		else if (im < 0)
+			arg = -PI / 2.;
 		else
-			return Complex(0, 0);
+			return set<Complex>{ Complex(0,0) };
 	}
 	else {
-		if (v.Im / v.Re < 0)
-			arg = PI - atan(abs(v.Im / v.Re));
+		if (re > 0)
+			arg = atan(im / re);
+		else if (re < 0) {
+			if (im > 0)
+				arg = atan(im / re) + PI;
+			else if (im < 0)
+				arg = atan(im / re) - PI;
+			else
+				arg = 0;
+		}
 		else
-			arg = atan(v.Im / v.Re);
+			arg = PI;
 	}
-	double Re_pow = sqrt(r) * cos(1 / 2. * arg);
-	double Im_pow = sqrt(r) * sin(1 / 2. * arg);
-	return Complex(Re_pow, Im_pow);
+	for (int k = 0; k < n; ++k) {
+		res_re = pow(r, 1. / n) * cos((arg + 2. * PI * k) / n);
+		res_im = pow(r, 1. / n) * sin((arg + 2. * PI * k) / n);
+		results.insert(Complex(res_re, res_im));
+	}
+	return results;
 }
