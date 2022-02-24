@@ -4,21 +4,18 @@
 Complex::Complex(const double& Re_value, const double& Im_value) :Re(Re_value), Im(Im_value) { }
 
 Complex operator+(const Complex& v1, const Complex& v2) {
-	double Re_sum = v1.Re + v2.Re;
-	double Im_sum = v1.Im + v2.Im;
-	return Complex(Re_sum, Im_sum);
+	return Complex(v1.Re + v2.Re, 
+		v1.Im + v2.Im);
 }
 
 Complex operator-(const Complex& v1, const Complex& v2) {
-	double Re_dif = v1.Re - v2.Re;
-	double Im_dif = v1.Im - v2.Im;
-	return Complex(Re_dif, Im_dif);
+	return Complex(v1.Re - v2.Re, 
+		v1.Im - v2.Im);
 }
 
 Complex operator*(const Complex& v1, const Complex& v2) {
-	double Re_mult = v1.Re * v2.Re - v1.Im * v2.Im;
-	double Im_mult = v1.Re * v2.Im + v1.Im * v2.Re;
-	return Complex(Re_mult, Im_mult);
+	return Complex(v1.Re * v2.Re - v1.Im * v2.Im, 
+		v1.Re * v2.Im + v1.Im * v2.Re);
 }
 
 Complex operator/(const Complex& v1, const Complex& v2) {
@@ -29,9 +26,8 @@ Complex operator/(const Complex& v1, const Complex& v2) {
 	catch (const exception e) {
 		cerr << "Ошибка при делении: " << e.what() << endl;
 	}
-	double Re_dev = (v1.Re * v2.Re + v1.Im * v2.Im) / (pow(v2.Re, 2) + pow(v2.Im, 2));
-	double Im_dev = (v1.Im * v2.Re - v1.Re * v2.Im) / (pow(v2.Re, 2) + pow(v2.Im, 2));
-	return Complex(Re_dev, Im_dev);
+	return Complex((v1.Re * v2.Re + v1.Im * v2.Im) / (pow(v2.Re, 2) + pow(v2.Im, 2)),
+		(v1.Im * v2.Re - v1.Re * v2.Im) / (pow(v2.Re, 2) + pow(v2.Im, 2)));
 }
 
 Complex operator^(const Complex& v, const int& n) {
@@ -47,9 +43,8 @@ Complex operator^(const Complex& v, const int& n) {
 	}
 	else
 		arg = atan(v.Im / v.Re);
-	double Re_pow = pow(r, n) * cos(n * arg);
-	double Im_pow = pow(r, n) * sin(n * arg);
-	return Complex(Re_pow, Im_pow);
+	return Complex(pow(r, n) * cos(n * arg), 
+		pow(r, n) * sin(n * arg));
 }
 
 ostream& operator<<(ostream& out, const Complex& v) {
